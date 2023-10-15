@@ -648,7 +648,7 @@ service apache2 restart
 test dengan
 
 ```
-lynx www.parikesit.abimanyu.E06.com/public/images/uwogh.jpg
+lynx www.parikesit.abimanyu.b21.com/public/images/uwogh.jpg
 ```
 
 
