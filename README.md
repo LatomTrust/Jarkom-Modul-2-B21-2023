@@ -14,15 +14,10 @@
 Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy
 
 ### Jawaban
-melakukan instalasi apache dan memindahkan resource ke `var/www`
+melakukan instalasi apache 
 ```
 apt-get install apache2
 service apache2 start
-
-git config --global http.sslVerify false
-git clone https://github.com/Hfdrsyd/Jarkom-Modul-2-b21
-
-cp -r /Jarkom-Modul-2-b21/Resource/abimanyu.yyy.com/abimanyu.yyy.com /var/www/abimanyu.b21.com
 ```
 kemudian pada `/etc/apache2/sites-available/000-default.conf` ditambahkan sebgai berikut
 
@@ -34,8 +29,9 @@ VirtualHost *:80>
         ServerName abimanyu.b21.com
         ServerAlias www.abimanyu.b21.com
 
-        ErrorLog $EAPACHE_LOG_DIR]/error.Log
-        CustomLog $[APACHE_LOG_DIR]/access.log combined
+        ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
 
 </VirtualHost>
 
@@ -74,9 +70,9 @@ VirtualHost *:80>
         </Directory>
 
         Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
 
-        ErrorLog $EAPACHE_LOG_DIR]/error.Log
-        CustomLog $[APACHE_LOG_DIR]/access.log combined
 
 </VirtualHost>
 
@@ -100,17 +96,8 @@ diperoleh sebagai berikut
 Selain itu, pada subdomain www.parikesit.abimanyu.yyy.com, DocumentRoot disimpan pada /var/www/parikesit.abimanyu.yyy
 
 ### Jawaban
-lakukan pemindahan resources ke `/var/www/parikesit.abimanyu.b21` .
 
-```
-apt-get install apache2
-service apache2 start
-git config --global http.sslVerify false
-git clone https://github.com/Hfdrsyd/Jarkom-Modul-2-b21
-cp -r /Jarkom-Modul-2-b21/Resource/parikesit.abimanyu.yyy.com/parikesit.abimanyu.yyy.com /var/www/parikesit.abimanyu.b21
-
-```
-kemudian pada `/etc/apache2/sites-available/000-default.conf` tambahkan konfigurasi sebagai berikut
+ pada `/etc/apache2/sites-available/000-default.conf` tambahkan konfigurasi sebagai berikut
 
 ```
 VirtualHost *:80>
@@ -125,8 +112,9 @@ VirtualHost *:80>
 
         Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
 
-        ErrorLog $EAPACHE_LOG_DIR]/error.Log
-        CustomLog $[APACHE_LOG_DIR]/access.log combined
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
 
 </VirtualHost>
 
@@ -137,8 +125,9 @@ VirtualHost *:80>
         ServerName parikesit.abimanyu.b21.com
         ServerALiaswww.parikesit.abimanyu.b21.com
 
-        ErrorLog $fAPACHE_LOG_DIRJ /error. Log
-        CustomLog $(APACHE_LOG_DIR]/access.Log combined
+     ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
 
 </VirtualHost>
 ```
@@ -172,8 +161,9 @@ VirtualHost *:80>
 
         Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
 
-        ErrorLog $EAPACHE_LOG_DIR]/error.Log
-        CustomLog $[APACHE_LOG_DIR]/access.log combined
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
 
 </VirtualHost>
 
@@ -185,8 +175,9 @@ VirtualHost *:80>
         ServerALiaswww.parikesit.abimanyu.b21.com
         <Directory /var/www/parikesit.abimanyu.b21/secret>
                 Deny From All
-        ErrorLog $fAPACHE_LOG_DIRJ /error. Log
-        CustomLog $(APACHE_LOG_DIR]/access.Log combined
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
 
 </VirtualHost>
 
@@ -224,9 +215,9 @@ VirtualHost *:80>
         </Directory>
 
         Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
 
-        ErrorLog $EAPACHE_LOG_DIR]/error.Log
-        CustomLog $[APACHE_LOG_DIR]/access.log combined
 
 </VirtualHost>
 
@@ -241,8 +232,9 @@ VirtualHost *:80>
         </Directory>
         ErrorDocument403 /error/403.html
         ErrorDocument 404 /error/404.html
-        ErrorLog $fAPACHE_LOG_DIRJ /error. Log
-        CustomLog $(APACHE_LOG_DIR]/access.Log combined
+     ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
 
 </VirtualHost>
 
@@ -272,7 +264,8 @@ Buatlah suatu konfigurasi virtual host agar file asset www.parikesit.abimanyu.yy
 ### Jawaban
 menambahkan alias pada parikesit.abimanyu.b21.com di `/etc/apache2/sites-available/000-default.conf` sebagai berikut:
 
-```VirtualHost *:80>
+```
+VirtualHost *:80>
 
         ServerAdmin webmaster@localhost
         DocumentRoot/var/www/abimanyu.b21.com
@@ -282,6 +275,330 @@ menambahkan alias pada parikesit.abimanyu.b21.com di `/etc/apache2/sites-availab
                 Options +Indexes
         </Directory>
 
+        Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<Virtualhost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/parikesit.abimanyu.b21
+        ServerName parikesit.abimanyu.b21.com
+        ServerALiaswww.parikesit.abimanyu.b21.com
+        <Directory /var/www/parikesit.abimanyu.b21/secret>
+                Deny From All
+        </Directory>
+        Alias "/js" "/var/www/parikesit.abimanyu.b21/public/js"
+        ErrorDocument403 /error/403.html
+        ErrorDocument 404 /error/404.html
+       ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+```
+kemudian restart apache
+```
+service apache2 restart
+```
+kemudian untuk testing dapat dilakukan dengan `lynx www.parikesit.abimanyu.b21.com/js` diperoleh
+
+<img width="503" alt="image" src="https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/91776952/21d631fa-3a3e-49b5-86e2-60c6576f5cf9">
+
+
+## Nomor 17
+### Soal
+Agar aman, buatlah konfigurasi agar www.rjp.baratayuda.abimanyu.yyy.com hanya dapat diakses melalui port 14000 dan 14400.
+
+### Jawaban
+tambahkan konfigurasi rjp.baratayuda.abimanyu.b21.com kedalam file `/etc/apache2/sites-available/000-default.conf` namun dengan port 14000 dan 14400.
+
+```
+
+VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/abimanyu.b21.com
+        ServerName abimanyu.b21.com
+        ServerAlias www.abimanyu.b21.com
+        <Directory/var/www/abimanyu.b21.com/index.php/home>
+                Options +Indexes
+        </Directory>
+
+        Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+
+     ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<Virtualhost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/parikesit.abimanyu.b21
+        ServerName parikesit.abimanyu.b21.com
+        ServerALiaswww.parikesit.abimanyu.b21.com
+        <Directory /var/www/parikesit.abimanyu.b21/secret>
+                Deny From All
+        </Directory>
+        Alias "/js" "/var/www/parikesit.abimanyu.b21/public/js"
+        ErrorDocument403 /error/403.html
+        ErrorDocument 404 /error/404.html
+        ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+</VirtualHost>
+
+<VirtualHost *:14000 *:14400>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/rjp.baratayuda.abimanyu.b21
+        ServerName rjp.baratayuda.abimanyu.b21.com
+        ServerALias www.rjp.baratayuda.abimanyu.b21.com
+
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+</VirtualHost>
+
+```
+
+kemudian tambahkan port 14000 dan 14400 pada konfigurasi port `/etc/apache2/ports.conf` sebagai berikut:
+
+```
+Listen 80
+Listen 14000
+Listen 14400
+
+<IfModule ssl_module>
+        Listen 443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+        Listen 443
+</IfModule>
+
+```
+kemudian restart apache
+```
+service apache2 restart
+```
+untuk testing dapat dilakukan 
+
+```
+lynx rjp.baratayuda.abimanyu.b12.com:14000
+```
+dan
+
+```
+lynx rjp.baratayuda.abimanyu.b12.com:14400
+```
+
+## Nomor 18
+### Soal
+Untuk mengaksesnya buatlah autentikasi username berupa “Wayang” dan password “baratayudayyy” dengan yyy merupakan kode kelompok. Letakkan DocumentRoot pada /var/www/rjp.baratayuda.abimanyu.yyy.
+
+### Jawaban
+setting username dan password pada suatu folder
+```
+mkdir /etc/apache2/passwd
+htpasswd -c -b /etc/apache2/passwd/password Wayang baratayudab21
+```
+kemudian pada rjp.baratayuda.abimanyu.b21.com di `/etc/apache2/sites-available/000-default.conf` ditambahkan sebagai berikut
+
+```
+VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/abimanyu.b21.com
+        ServerName abimanyu.b21.com
+        ServerAlias www.abimanyu.b21.com
+        <Directory/var/www/abimanyu.b21.com/index.php/home>
+                Options +Indexes
+        </Directory>
+
+        Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<Virtualhost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/parikesit.abimanyu.b21
+        ServerName parikesit.abimanyu.b21.com
+        ServerALiaswww.parikesit.abimanyu.b21.com
+        <Directory /var/www/parikesit.abimanyu.b21/secret>
+                Deny From All
+        </Directory>
+        Alias "/js" "/var/www/parikesit.abimanyu.b21/public/js"
+        ErrorDocument403 /error/403.html
+        ErrorDocument 404 /error/404.html
+      ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<VirtualHost *:14000 *:14400>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/rjp.baratayuda.abimanyu.b21
+        ServerName rjp.baratayuda.abimanyu.b21.com
+        ServerALias www.rjp.baratayuda.abimanyu.b21.com
+        <Directory/var/www/rjp.baratayuda.abimanyu.b21>
+                AuthType Basic
+                AuthName "Restricted Files"
+                # (Following line optional)
+                AuthBasicProvider file
+                AuthUserFile "/etc/apache2/passwd/password"
+                Require user Wayang
+        </Directory>
+       ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+</VirtualHost>
+
+```
+
+kemudian restart apache
+```
+service apache2 restart
+```
+
+sehingga jika dilakukan testing pada port 14000
+```
+lynx www.rjp.baratayuda.abimanyu.b21.com:14000
+```
+sehingga diperoleh
+![image](Images/no18b.png)
+
+![image](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/91776952/c684b6cf-e261-48bd-886c-4428fc60d8e3)
+
+<img width="500" alt="image" src="https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/91776952/76f643aa-2e59-486e-863c-f88b1da5cbd6">
+
+
+## Nomor 19
+### Soal
+Buatlah agar setiap kali mengakses IP dari Abimanyu akan secara otomatis dialihkan ke www.abimanyu.yyy.com (alias)
+
+### Jawaban
+melakukan enable pada rewrite dengan
+```
+a2enmod rewrite
+```
+pada abimanyu.b21.com di `/etc/apache2/sites-available/000-default.conf` dapat ditambahkan RewriteRule dan RewriteCond sebagai berikut.
+
+```
+
+VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/abimanyu.b21.com
+        ServerName abimanyu.b21.com
+        ServerAlias www.abimanyu.b21.com
+        <Directory/var/www/abimanyu.b21.com/index.php/home>
+                Options +Indexes
+        </Directory>
+        <Directory /var/www>
+        RewriteEngine on
+        RewriteCond &(HTTP_HOST] ^1921.2091.31.4$
+        RewriteRule /.* http://www.abimanyu.E06.com [R]
+        </Directory>
+        Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<Virtualhost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/parikesit.abimanyu.b21
+        ServerName parikesit.abimanyu.b21.com
+        ServerALiaswww.parikesit.abimanyu.b21.com
+        <Directory /var/www/parikesit.abimanyu.b21/secret>
+                Deny From All
+        </Directory>
+        Alias "/js" "/var/www/parikesit.abimanyu.b21/public/js"
+        ErrorDocument403 /error/403.html
+        ErrorDocument 404 /error/404.html
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<VirtualHost *:14000 *:14400>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/rjp.baratayuda.abimanyu.b21
+        ServerName rjp.baratayuda.abimanyu.b21.com
+        ServerALias www.rjp.baratayuda.abimanyu.b21.com
+        <Directory/var/www/rjp.baratayuda.abimanyu.b21>
+                AuthType Basic
+                AuthName "Restricted Files"
+                # (Following line optional)
+                AuthBasicProvider file
+                AuthUserFile "/etc/apache2/passwd/password"
+                Require user Wayang
+        </Directory>
+           ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+</VirtualHost>
+
+```
+kemudian restart apache
+```
+service apache2 restart
+```
+terakhir dilakukan testing dengan
+
+```
+lynx 10.19.3.4
+```
+atau
+```
+lynx www.abimanyu.b21.com
+```
+
+<img width="506" alt="image" src="https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/91776952/433a341d-4d24-4083-b81d-a47c59c7fdd5">
+
+
+## Nomor 20
+### Soal
+Karena website www.parikesit.abimanyu.yyy.com semakin banyak pengunjung dan banyak gambar gambar random, maka ubahlah request gambar yang memiliki substring “abimanyu” akan diarahkan menuju abimanyu.png.
+
+### Jawaban
+melakukan enable pada rewrite dengan
+```
+a2enmod rewrite
+```
+pada parikesit.abimanyu.E06.com di `/etc/apache2/sites-available/000-default.conf` dapat ditambahkan redirect pada request yang memiliki kata abimanyu dan extension jpg atau png.
+
+```
+VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/abimanyu.b21.com
+        ServerName abimanyu.b21.com
+        ServerAlias www.abimanyu.b21.com
+        <Directory/var/www/abimanyu.b21.com/index.php/home>
+                Options +Indexes
+        </Directory>
+        <Directory /var/www>
+        RewriteEngine on
+        RewriteCond &(HTTP_HOST] ^1921.2091.31.4$
+        RewriteRule /.* http://www.abimanyu.E06.com [R]
+        </Directory>
         Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
 
         ErrorLog $EAPACHE_LOG_DIR]/error.Log
@@ -301,35 +618,31 @@ menambahkan alias pada parikesit.abimanyu.b21.com di `/etc/apache2/sites-availab
         Alias "/js" "/var/www/parikesit.abimanyu.b21/public/js"
         ErrorDocument403 /error/403.html
         ErrorDocument 404 /error/404.html
-        ErrorLog $fAPACHE_LOG_DIRJ /error. Log
-        CustomLog $(APACHE_LOG_DIR]/access.Log combined
+        ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
 
+</VirtualHost>
+
+<VirtualHost *:14000 *:14400>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/rjp.baratayuda.abimanyu.b21
+        ServerName rjp.baratayuda.abimanyu.b21.com
+        ServerALias www.rjp.baratayuda.abimanyu.b21.com
+        <Directory/var/www/rjp.baratayuda.abimanyu.b21>
+                AuthType Basic
+                AuthName "Restricted Files"
+                # (Following line optional)
+                AuthBasicProvider file
+                AuthUserFile "/etc/apache2/passwd/password"
+                Require user Wayang
+        </Directory>
+        ErrorLog $EAPACHE._LOG_DIR /error.Log
+        CustomLog $[APACHE_LOG_DIR]/access.log combined
 </VirtualHost>
 ```
 kemudian restart apache
 ```
 service apache2 restart
 ```
-kemudian untuk testing dapat dilakukan dengan `lynx www.parikesit.abimanyu.b21.com/js` diperoleh
-
-<img width="503" alt="image" src="https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/91776952/21d631fa-3a3e-49b5-86e2-60c6576f5cf9">
-
-
-## Nomor 17
-### Soal
-Agar aman, buatlah konfigurasi agar www.rjp.baratayuda.abimanyu.yyy.com hanya dapat diakses melalui port 14000 dan 14400.
-
-### Jawaban
-pindahkan file resource rjp.baratayuda.abimanyu.yyy.com ke var/www
-```
-apt-get install apache2
-service apache2 start
-
-git config --global http.sslVerify false
-git clone https://github.com/Hfdrsyd/Jarkom-Modul-2-b21
-
-cp -r /Jarkom-Modul-2-b21/Resource/rjp.baratayuda.abimanyu.yyy.com/rjp.baratayuda.abimanyu.yyy.com/ /var/www/rjp.baratayuda.abimanyu.b21
-```
-kemudian tambahkan konfigurasi rjp.baratayuda.abimanyu.b21.com kedalam file `/etc/apache2/sites-available/000-default.conf` namun dengan port 14000 dan 14400.
 
 
