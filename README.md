@@ -508,8 +508,8 @@ VirtualHost *:80>
         </Directory>
         <Directory /var/www>
         RewriteEngine on
-        RewriteCond &(HTTP_HOST] ^1921.2091.31.4$
-        RewriteRule /.* http://www.abimanyu.E06.com [R]
+        RewriteCond %{HTTTP_HOST} ^10\.19\.3.4$
+        RewriteRule /.* http://www.abimanyu.b21.com/index.php/home."
         </Directory>
         Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
 
@@ -582,7 +582,7 @@ melakukan enable pada rewrite dengan
 ```
 a2enmod rewrite
 ```
-pada parikesit.abimanyu.E06.com di `/etc/apache2/sites-available/000-default.conf` dapat ditambahkan redirect pada request yang memiliki kata abimanyu dan extension jpg atau png.
+pada parikesit.abimanyu.b21.com di `/etc/apache2/sites-available/000-default.conf` dapat ditambahkan redirect pada request yang memiliki kata abimanyu dan extension jpg atau png.
 
 ```
 VirtualHost *:80>
@@ -596,8 +596,9 @@ VirtualHost *:80>
         </Directory>
         <Directory /var/www>
         RewriteEngine on
-        RewriteCond &(HTTP_HOST] ^1921.2091.31.4$
-        RewriteRule /.* http://www.abimanyu.E06.com [R]
+        RewriteRule ^public/images/abimanyu\.png$ - [L]
+        RewriteCond %{REQUEST_URI} abimanyu
+        RewriteRule \.(jpg|png)$ /public/images/abimanyu.png [R=301,L]
         </Directory>
         Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
 
@@ -643,6 +644,11 @@ VirtualHost *:80>
 kemudian restart apache
 ```
 service apache2 restart
+```
+test dengan
+
+```
+lynx www.parikesit.abimanyu.E06.com/public/images/uwogh.jpg
 ```
 
 
