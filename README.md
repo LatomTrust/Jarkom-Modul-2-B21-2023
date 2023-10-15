@@ -390,12 +390,12 @@ service apache2 restart
 untuk testing dapat dilakukan 
 
 ```
-lynx rjp.baratayuda.abimanyu.b12.com:14000
+lynx rjp.baratayuda.abimanyu.b21.com:14000
 ```
 dan
 
 ```
-lynx rjp.baratayuda.abimanyu.b12.com:14400
+lynx rjp.baratayuda.abimanyu.b21.com:14400
 ```
 
 ## Nomor 18
