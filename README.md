@@ -350,6 +350,178 @@ Hasilnya akan seperti di bawah ketika dijalankan di `Sadewa`:
 
 ![slave](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/5aa2bbf0-1a3f-41c6-a08e-5db6becd2747)
 
+## Nomor 7
+Seperti yang kita tahu karena banyak sekali informasi yang harus diterima, buatlah subdomain khusus untuk perang yaitu `baratayuda.abimanyu.yyy.com` dengan alias `www.baratayuda.abimanyu.yyy.com` yang didelegasikan dari `Yudhistira` ke `Werkudara` dengan IP menuju ke `Abimanyu` dalam folder `Baratayuda`.
+
+## Jawaban
+
+### Yudhistira
+
+Buka *file* [**abimanyu.b21.com**](abimanyu.b21.com) dan edit seperti konfigurasi berikut.
+
+![abi2](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/df393729-658d-43e0-b78e-ececdc49acca)
+
+Buka *file* **/etc/bind/named.conf.options** dan edit seperti konfigurasi berikut. *Comment* bagian `dnssec-validation auto` dan tambahkan di baris bawahnya `allow-query{any;}`.
+
+![allowquery](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/a068fae0-7088-4d45-b286-e5c2c0ca16b0)
+
+### Werkudara
+
+Tambahkan konfigurasi berikut pada **/etc/bind/named.conf.local** di `Werkudara`.
+```
+zone "baratayuda.abimanyu.b21.com" {
+    type master;
+    file "/etc/bind/delegasi/baratayuda.abimanyu.b21.com";
+};
+```
+
+![confbaratayuda](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/d5bca4fa-c0e3-4232-99d7-e6c4d133c2db)
+
+Buat folder baru, yaitu **delegasi** pada **/etc/bind**.
+```
+mkdir /etc/bind/delegasi
+```
+
+*Copy file* **db.local** ke dalam folder **delegasi** dan ubah namanya menjadi [**baratayuda.abimanyu.b21.com**](baratayuda.abimanyu.b21.com).
+```
+cp /etc/bind/db.local /etc/bind/delegasi/baratayuda.abimanyu.b21.com
+```
+
+Buka *file* [**baratayuda.abimanyu.b21.com**](baratayuda.abimanyu.b21.com) dan edit seperti konfigurasi berikut.
+
+![Screenshot 2023-10-17 171241](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/d19f2392-f4d6-4e47-9c0e-44d69661ec23)
+
+Dalam konfigurasi ini sudah ditambahkan *record* **CNAME** [**www.baratayuda.abimanyu.b21.com**](www.baratayuda.abimanyu.b21.com) untuk membuat alias yang mengarahkan domain ke [**baratayuda.abimanyu.b21.com**](baratayuda.abimanyu.b21.com).
+
+*Restart* **bind9**.
+```
+service bind9 restart
+```
+
+### Sadewa atau Nakula
+
+Lakukan *testing* pada `Sadewa` dan `Nakula` untuk cek apakah [**baratayuda.abimanyu.b21.com**](baratayuda.abimanyu.b21.com) atau [**www.baratayuda.abimanyu.b21.com**](www.baratayuda.abimanyu.b21.com) dapat diakses. Jika sukses, maka akan memunculkan hasil seperti berikut.
+
+![pingbar](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/ead20e88-dc8e-4a3b-908d-536c9ff405b9)
+
+![pingwwwbar](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/0a703e50-f9ee-4627-a919-8332ee4b867e)
+
+## Nomor 8
+Untuk informasi yang lebih spesifik mengenai Ranjapan Baratayuda, buatlah subdomain melalui `Werkudara` dengan akses `rjp.baratayuda.abimanyu.yyy.com` dengan alias `www.rjp.baratayuda.abimanyu.yyy.com` yang mengarah ke `Abimanyu`.
+
+## Jawaban
+
+### Werkudara
+
+Buka *file* [**baratayuda.abimanyu.b21.com**](baratayuda.abimanyu.b21.com) dan edit seperti konfigurasi berikut.
+
+![rjp](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/fd73a3ed-d466-45a8-a95d-f9636b7f1642)
+
+Dalam konfigurasi ini sudah ditambahkan *record* **CNAME** [**www.rjp.baratayuda.abimanyu.b21.com**](www.rjp.baratayuda.abimanyu.b21.com) untuk membuat alias yang mengarahkan domain ke [**baratayuda.abimanyu.b21.com**](baratayuda.abimanyu.b21.com).
+
+*Restart* **bind9**.
+```
+service bind9 restart
+```
+
+### Sadewa atau Nakula
+
+Lakukan *testing* pada `Sadewa` dan `Nakula` untuk cek apakah [**rjp.baratayuda.abimanyu.yyy.com**](rjp.baratayuda.abimanyu.yyy.com) atau [**www.rjp.baratayuda.abimanyu.yyy.com**](www.rjp.baratayuda.abimanyu.yyy.com) dapat diakses. Jika sukses, maka akan memunculkan hasil seperti berikut.
+
+![pingrjp](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/5f6cd1f1-b8cc-4f51-88d2-af491981fa02)
+
+![pingwwwrjp](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/9f63bf3e-67c1-41ef-a8b3-e1216dbbfd1f)
+
+## Nomor 9
+`Arjuna` merupakan suatu Load Balancer Nginx dengan tiga worker (yang juga menggunakan nginx sebagai webserver) yaitu `Prabakusuma`, `Abimanyu`, dan `Wisanggeni`. Lakukan deployment pada masing-masing worker.
+
+## Jawaban
+
+### Prabakusuma, Abimanyu, dan Wisanggeni
+
+Melakukan instalasi dan setup **nginx dan php** terlebih dahulu pada `Prabakusuma`, `Abimanyu`, dan `Wisanggeni` dengan *update package list*. *Command* yang dijalankan adalah sebagai berikut.
+```
+ apt-get update && apt install nginx php php-fpm -y
+```
+
+*Start* **nginx**.
+```
+service nginx start
+```
+
+### Sadewa dan Nakula
+
+Melakukan instalasi **lynx** terlebih dahulu pada `Sadewa` dan `Nakula` dengan *update package list*. *Command* yang dijalankan adalah sebagai berikut.
+```
+apt-get update
+apt-get install lynx -y
+```
+
+Lalu, *testing* apakah sudah terinstall dengan benar dengan `lynx` ke [**google.com**](google.com). Sebagai contoh pada `Sadewa`:
+
+![google](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/5cfb9bed-eca3-4033-8582-0c253797340e)
+
+## Nomor 10
+Kemudian gunakan algoritma `Round Robin` untuk Load Balancer pada `Arjuna`. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh
+    - Prabakusuma:8001
+    - Abimanyu:8002
+    - Wisanggeni:8003
+    
+## Jawaban
+
+Sebelum mengerjakan perlu untuk melakukan setup terlebih dahulu. Karena telah berhasil melakukan deployment pada nomor 9. Hanya perlu mengubah masing-masing port pada worker menuju port yang telah ditentukan yaitu `Prabakusuma:8001, Abimanyu:8002, Wisanggeni:8003`. Kita juga perlu mengubah port `load-balancing` dengan menambahkan `:800X` pada masing-masing server
+
+### Script
+
+**Arjuna (Load Balancing)**
+```
+upstream backend {
+  server 192.173.3.2:8001; # IP PrabuKusuma
+  server 192.173.3.3:8002; # IP Abimanyu
+  server 192.173.3.4:8003; # IP Wisanggeni
+}
+```
+
+**PrabuKusuma, Abimanyu, Wisanggeni**
+
+X adalah port yang telah ditentukan sesuai `worker` masing-masing
+```
+echo 'server {
+        listen 800X;
+
+        root /var/www/jarkom;
+        index index.php index.html index.htm index.nginx-debian.html;
+
+        server_name _;
+
+        location / {
+                try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+                include snippets/fastcgi-php.conf;
+                fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+        }
+
+        location ~ /\.ht {
+                deny all;
+        }
+}' > /etc/nginx/sites-available/jarkom
+```
+### Result
+
+![Screenshot 2023-10-17 180547](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/2bae173f-75ee-4be7-b9e8-6a90e7b9c179)
+
+![lynxabi](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/3041c579-a87c-450b-af93-40e470cb7b03)
+
+![Screenshot 2023-10-17 180556](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/83782366-7ebf-4c92-a1db-53a08458dc9c)
+
+![lynxpraba](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/d8940d38-10eb-4ae1-a88b-7c29e188ec54)
+
+![Screenshot 2023-10-17 180602](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/d9d37f75-a1b0-4f84-883c-c20a0a407d45)
+
+![lynxwisang](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/a5fbfeb2-be89-4450-9892-e4772522f07b)
+
 ## Nomor 11
 ### Soal
 Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy
