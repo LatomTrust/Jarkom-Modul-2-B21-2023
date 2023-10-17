@@ -9,6 +9,215 @@
 
 # Dokumentasi Pengerjaan Soal
 
+## Nomor 1
+`Yudhistira` akan digunakan sebagai DNS Master, `Werkudara` sebagai DNS Slave, `Arjuna` merupakan Load Balancer yang terdiri dari beberapa Web Server yaitu `Prabakusuma`, `Abimanyu`, dan `Wisanggeni`. Buatlah topologi dengan pembagian yang dapat diakses pada drive pada soal.
+
+## Jawaban
+Pertama, membuat topologi sesuai permintaan soal. Kelompok kami mendapat topologi 2, berikut topologinya:
+![topologi](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/cd4db9e2-4c94-47f6-acea-740cd5a2d56f)
+
+Kemudian *setting network* masing-masing *node* dengan fitur `Edit network configuration` yang ada di menu `Configure`. *Setting* awal yang sudah ada dapat dihapus dan diganti dengan konfigurasi berikut:
+
+- Pandudewanata
+  ```
+  auto eth0
+  iface eth0 inet dhcp
+
+  auto eth1
+  iface eth1 inet static
+	address 10.19.1.1
+	netmask 255.255.255.0
+
+  auto eth2
+  iface eth2 inet static
+	address 10.19.2.1
+	netmask 255.255.255.0
+
+  auto eth3
+  iface eth3 inet static
+	address 10.19.3.1
+	netmask 255.255.255.0
+  ```
+
+- Sadewa
+  ```
+  auto eth0
+  iface eth0 inet static
+	address 10.19.1.2
+	netmask 255.255.255.0
+	gateway 10.19.1.1
+  ```
+  
+  - Nakula
+  ```
+  auto eth0
+  iface eth0 inet static
+	address 10.19.1.3
+	netmask 255.255.255.0
+	gateway 10.19.1.1
+  ```
+    
+- Yudhistira
+  ```
+  auto eth0
+  iface eth0 inet static
+        address 10.19.2.2
+	netmask 255.255.255.0
+	gateway 10.19.2.1
+  ```
+  
+- Werkudara
+  ```
+  auto eth0
+  iface eth0 inet static
+	address 10.19.3.2
+	netmask 255.255.255.0
+	gateway 10.19.3.1
+  ```
+  
+- Arjuna
+  ```
+  auto eth0
+  iface eth0 inet static
+	address 10.19.3.3
+	netmask 255.255.255.0
+	gateway 10.19.3.1
+  ```
+  
+- Abimanyu
+  ```
+  auto eth0
+  iface eth0 inet static
+	address 10.19.3.4
+	netmask 255.255.255.0
+	gateway 10.19.3.1
+  ```
+  
+- Prabakusuma
+  ```
+  auto eth0
+  iface eth0 inet static
+	address 10.19.3.5
+	netmask 255.255.255.0
+	gateway 10.19.3.1
+  ```
+  
+- Wisanggeni
+  ```
+  auto eth0
+  iface eth0 inet static
+	address 10.19.3.6
+	netmask 255.255.255.0
+	gateway 10.19.3.1
+  ```
+
+### Pandudewanata
+
+*Restart* semua *node*. Lalu jalankan *command* berikut pada *router* `Pandudewanata` untuk pengaturan lalu lintas komputer.
+```
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.19.0.0/16
+```
+(Note: *Prefix* IP yang digunakan sesuai *Prefix* IP Kelompok, dalam hal ini kelompok B21 adalah **10.19**).
+
+Dan ketikkan *command* ini pada `Pandudewanata` untuk melihat IP DNS:
+```
+cat /etc/resolv.conf
+```
+Akan muncul *nameserver* yang akan digunakan pada konfigurasi selanjutnya.
+
+![cat](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/03f80533-8ac2-43ba-90d5-d4fd471f7344)
+
+### Semua node (kecuali Pandudewanata)
+
+Agar *node*-*node* lainnya dapat mengakses internet, jalankan *command* berikut dan gunakan IP DNS dari `Pandudewanata` tadi.
+```
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+*Restart* semua *node* kembali. Lalu, *testing* semua *node* apakah sudah terkoneksi dengan internet dengan `ping` ke [**google.com**](google.com). Sebagai contoh pada `Sadewa`:
+
+![pinggoogle](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/b2e300cf-42a2-4f20-a1f8-9173e42cb73e)
+
+## Nomor 2
+Buatlah website utama pada node arjuna dengan akses ke ``arjuna.yyy.com`` dengan alias ``www.arjuna.yyy.com`` dengan ``yyy`` merupakan kode kelompok.
+
+## Jawaban
+Berikut langkah-langkah untuk membuat domain arjuna.b21.com.
+
+### Yudhistira
+
+Melakukan instalasi **bind9** terlebih dahulu pada `Yudhistira` dengan *update package list*. *Command* yang dijalankan adalah sebagai berikut.
+```
+apt-get update
+apt-get install bind9 -y
+```
+
+Setelah instalasi selesai, buat domain [**arjuna.yyy.com**](arjuna.yyy.com). Lakukan *command* seperti berikut pada `Yudhistira`.
+```
+nano /etc/bind/named.conf.local
+```
+
+Isi konfigurasi domain [**arjuna.yyy.com**](arjuna.yyy.com) sesuai sintaks berikut.
+```
+zone "arjuna.b21.com" {
+    type master;
+    file "/etc/bind/jarkom/arjuna.b21.com";
+};
+```
+
+![confarjuna](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/01dbe1ac-5181-4778-80e9-55b0a1c3ce19)
+
+Buat folder baru, yaitu **jarkom** pada **/etc/bind**.
+```
+mkdir /etc/bind/jarkom
+```
+
+*Copy file* **db.local** ke dalam folder **jarkom** yang baru dibuat dan ubah namanya menjadi [**arjuna.b21.com**](arjuna.b21.com).
+```
+cp /etc/bind/db.local /etc/bind/jarkom/arjuna.b21.com
+```
+
+Buka *file* [**arjuna.b21.com**](arjuna.b21.com) dan edit seperti konfigurasi berikut.
+
+![arjuna](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/7032e31c-67df-4b7f-8991-ed8039cff0ba)
+
+Dalam konfigurasi ini sudah ditambahkan *record* **CNAME** [**www.arjuna.b21.com**](www.arjuna.b21.com) untuk membuat alias yang mengarahkan domain ke [**arjuna.b21.com**](arjuna.b21.com).
+
+*Restart* **bind9**.
+```
+service bind9 restart
+```
+
+### Sadewa atau Nakula
+
+Lakukan *testing* dengan menambahkan `nameserver 10.19.2.2` (IP Yudhistira) pada `Sadewa` dan `Nakula` untuk cek apakah [**arjuna.b21.com**](arjuna.b21.com) atau [**www.arjuna.b21.com**](www.arjuna.b21.com) dapat diakses. Jika sukses, maka akan memunculkan hasil seperti berikut.
+
+![pingarjuna](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/7340f68c-9234-4a06-8f0f-257590c390a8)
+
+![pingwwwarjuna](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/5eeff522-1f49-4f02-b7a0-93bcd457b2ef)
+
+## Nomor 3
+Dengan cara yang sama seperti soal nomor 2, buatlah website utama dengan akses ke `abimanyu.yyy.com` dan alias `www.abimanyu.yyy.com`.
+
+## Jawaban
+Untuk membuat domain `abimanyu.yyy.com` dan alias `www.abimanyu.yyy.com`, langkah-langkah yang dilakukan sama seperti pengerjaan ada nomor 2. Jika sukses, maka akan memunculkan hasil seperti berikut.
+
+![pingabimanyu](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/2714e4da-1e8b-42fb-bc2a-89bc3912c7e0)
+
+![pingwwwabimanyu](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/fb55d97b-068a-4a52-822c-5d983030e58a)
+
+## Nomor 4
+Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain `parikesit.abimanyu.yyy.com` yang diatur DNS-nya di `Yudhistira` dan mengarah ke `Abimanyu`.
+
+## Jawaban
+
+### Yudhistira
+
+Buka *file* [**abimanyu.b21.com**](abimanyu.b21.com) dan edit seperti konfigurasi berikut.
+
+![abimanyu](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/a9a1f3fb-a07d-490a-baa4-dccafdaa1c02)
+
+
 ## Nomor 11
 ### Soal
 Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy
