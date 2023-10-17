@@ -274,6 +274,82 @@ Akan muncul seperti ini.
 
 ![reverselg](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/a5794647-fcb4-4737-ac36-c113ff2a8e05)
 
+## Nomor 6
+Agar dapat tetap dihubungi ketika DNS Server Yudhistira bermasalah, buat juga Werkudara sebagai DNS Slave untuk domain utama.
+
+## Jawaban
+
+### Yudhistira
+
+Modifikasi konfigurasi berikut pada **/etc/bind/named.conf.local** di `Yudhistira`.
+```
+zone "arjuna.b21.com" {
+    type master;
+    notify yes;
+    also-notify { 10.19.3.2; }; // IP Werkudara
+    allow-transfer { 10.19.3.2; }; // IP Werkudara
+    file "/etc/bind/jarkom/arjuna.b21.com";
+};
+
+zone "abimanyu.b21.com" {
+    type master;
+    notify yes;
+    also-notify { 10.19.3.2; }; // IP Werkudara
+    allow-transfer { 10.19.3.2; }; // IP Werkudara
+    file "/etc/bind/jarkom/abimanyu.b21.com";
+};
+```
+
+*Restart* **bind9**.
+```
+service bind9 restart
+```
+
+### Werkudara
+
+Melakukan instalasi **bind9** pada `Werkudara` dengan *update package list*. *Command* yang dijalankan adalah sebagai berikut.
+```
+apt-get update
+apt-get install bind9 -y
+```
+
+Tambahkan konfigurasi berikut pada **/etc/bind/named.conf.local** di `Werkudara`.
+```
+zone "arjuna.b21.com" {
+    type slave;
+    masters { 10.3.2.2; }; // IP Yudhistira
+    file "/var/lib/bind/arjuna.b21.com";
+};
+
+zone "abimanyu.b21.com" {
+    type slave;
+    masters { 10.3.2.2; }; // IP Yudhistira
+    file "/var/lib/bind/abimanyu.b21.com";
+};
+```
+
+*Restart* **bind9**.
+```
+service bind9 restart
+```
+
+### Yudhistira
+
+Lakukan *testing* pada `Sadewa` dan `Nakula` untuk cek apakah **DNS Slave** berhasil dibuat pada `Werkudara`. *Stop service* bind9 terlebih dahulu pada `Yudhistira`.
+```
+service bind9 stop
+```
+
+### Sadewa atau Nakula
+
+Pada `Sadewa` dan `Nakula` jangan lupa untuk menambahkan *nameserver* `Werkudara`, yaitu **10.19.3.2** pada **/etc/resolv.conf**, sehingga menjadi seperti ini:
+
+![rresolc](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/84a73194-18ba-4856-8837-a1a055e223e4)
+
+Hasilnya akan seperti di bawah ketika dijalankan di `Sadewa`:
+
+![slave](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/5aa2bbf0-1a3f-41c6-a08e-5db6becd2747)
+
 ## Nomor 11
 ### Soal
 Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy
