@@ -217,6 +217,62 @@ Buka *file* [**abimanyu.b21.com**](abimanyu.b21.com) dan edit seperti konfiguras
 
 ![abimanyu](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/a9a1f3fb-a07d-490a-baa4-dccafdaa1c02)
 
+*Restart* **bind9**.
+```
+service bind9 restart
+```
+
+### Sadewa atau Nakula
+
+Lakukan *testing* pada `Sadewa` dan `Nakula` untuk cek apakah [**abimanyu.b21.com**](abimanyu.b21.com) atau [**www.abimanyu.b21.com**](www.abimanyu.b21.com) dapat diakses. Jika sukses, maka akan memunculkan hasil seperti berikut.
+
+![pingparikesit](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/59f8175e-4c34-458e-9202-8140180463a1)
+
+## Nomor 5
+Buat juga reverse domain untuk domain utama. (Abimanyu saja yang direverse).
+
+## Jawaban
+
+### Yudhistira
+
+Edit *file* **/etc/bind/named.conf.local** pada `Yudhistira` dan tambahkan konfigurasi berikut.  Tambahkan *reverse* dari 3 *bytes* awal dari IP yang ingin dilakukan **Reverse DNS**. Dalam hal ini IP **10.19.3** untuk IP dari *record* sehingga *reverse*-nya adalah **3.19.10**.
+```
+zone "3.19.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/jarkom/3.19.10.in-addr.arpa";
+};
+```
+
+*Copy file* **db.local** ke dalam folder **jarkom** dan ubah namanya menjadi [**3.19.10.in-addr.arpa**](3.19.10.in-addr.arpa).
+```
+cp /etc/bind/db.local /etc/bind/jarkom/3.19.10.in-addr.arpa
+```
+
+Buka *file* [**3.19.10.in-addr.arpa**](3.19.10.in-addr.arpa) dan edit seperti konfigurasi berikut.
+
+![reverse](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/6a562257-c27d-43f4-a659-25775f4c5d9c)
+
+*Restart* **bind9**.
+
+```
+service bind9 restart
+```
+
+### Sadewa atau Nakula
+
+Untuk mengecek apakah konfigurasi sudah benar atau belum, lakukan perintah berikut pada `Sadewa`.
+```
+// Install package dnsutils, ubah nameserver ke 192.168.122.1
+apt-get update
+apt-get install dnsutils -y
+
+// Kembalikan nameserver agar tersambung dengan Yudhistira
+host -t PTR 10.19.2.2
+```
+
+Akan muncul seperti ini.
+
+![reverselg](https://github.com/LatomTrust/Jarkom-Modul-2-B21-2023/assets/114276069/a5794647-fcb4-4737-ac36-c113ff2a8e05)
 
 ## Nomor 11
 ### Soal
